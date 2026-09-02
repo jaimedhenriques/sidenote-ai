@@ -161,11 +161,15 @@ export function App() {
           <p className="eyebrow"><ShieldCheck size={16} /> Consent-first Granola competitor</p>
           <h1>SideNote AI</h1>
           <p className="lede">AI meeting notes from your own Mac — no bots joining Zoom, Teams, Meet, or Slack calls.</p>
+          <div className="hero-actions">
+            <a className="primary hero-cta" href="#new-meeting"><Play size={18} /> Start a private meeting note</a>
+            <p>Consent comes first. Start locally with no meeting bot.</p>
+          </div>
         </div>
         <div className="trust-card"><Lock size={18} /> Local-first notes. Temporary audio deleted after transcription by default. {providerConfiguration}</div>
       </section>
 
-      <section className="grid two">
+      <section className="grid two" id="new-meeting">
         <div className="panel">
           <h2>New meeting</h2>
           <label>Title<input value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Customer call, 1:1, user interview..." /></label>
