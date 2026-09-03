@@ -214,6 +214,7 @@ export function App() {
             <div className="recording-row"><span className={`dot ${status}`} /> {status} · {formatDuration(elapsed)} · {audioPermission}</div>
             <textarea value={activeMeeting.userNotesMarkdown} onChange={(event) => updateActiveNotes(event.target.value)} placeholder="Type rough notes while you talk..." />
             <textarea value={activeMeeting.transcriptText} onChange={(event) => updateActiveTranscript(event.target.value)} placeholder="Paste transcript here, import a .txt/.md file, or connect Mac recorder/transcription provider..." />
+            {activeMeeting.actionItems.length > 0 && <section className="import-box" aria-labelledby="active-action-items"><h3 id="active-action-items">Action items</h3><ul>{activeMeeting.actionItems.map((item) => <li key={item.id}>{item.text}</li>)}</ul></section>}
             <div className="actions"><label className="file-button"><FileText size={16} /> Import transcript<input type="file" accept=".txt,.md,text/plain,text/markdown" onChange={importTranscript} /></label><button onClick={stopMeeting}><CircleStop size={16} /> Stop + summarize</button>{activeMeeting.aiSummaryMarkdown && <button onClick={() => copy(activeMeeting.aiSummaryMarkdown)}><Clipboard size={16} /> Copy AI notes</button>}</div>
           </> : <p className="muted">Start a meeting or import a recorder manifest/transcript to open the note editor.</p>}
         </div>

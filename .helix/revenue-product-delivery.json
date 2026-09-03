@@ -8,11 +8,11 @@
   },
   "market": {
     "icp": "Privacy-conscious meeting participants who need local-first notes",
-    "buyerPain": "A local summary can repeat a meeting goal both as raw note text and as dedicated review context.",
+    "buyerPain": "Generated action items remain buried in summary text instead of being visible during local note review.",
     "revenueHypothesis": "Reliable, local-first note capture increases confidence in the free MVP before any paid offering is evaluated."
   },
   "increment": {
-    "name": "local-summary-meeting-goal-deduplication",
+    "name": "active-note-action-item-panel",
     "acceptanceCriteria": [
       "A non-empty meeting goal is copied into the started meeting note.",
       "The meeting-goal input accepts no more than 280 characters.",
@@ -24,6 +24,8 @@
       "The local deterministic summary renders a non-empty meeting goal in a dedicated section.",
       "The local deterministic summary omits the goal section when no goal exists.",
       "The local deterministic summary does not repeat a dedicated meeting goal in its executive summary or key points.",
+      "The active note shows generated action items when they exist.",
+      "The active note omits the action-item panel when there are no action items.",
       "A blank meeting goal still starts with a blank note."
     ]
   },
@@ -45,7 +47,7 @@
       "attempts": 1,
       "scheduler": "a375988edb48"
     },
-    "rollback": "Revert only the local summary source deduplication for meeting goals.",
+    "rollback": "Revert only the active-note action-item panel and its styles.",
     "stopCondition": "Stop after one local verified increment; do not deploy, submit to an app store, or change licensing."
   }
 }

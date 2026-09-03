@@ -29,6 +29,8 @@ Let a meeting owner state an optional goal before a consent-gated note starts.
   section and omits that section when no goal exists.
 - When that dedicated goal section exists, the local summary does not repeat
   the raw goal heading in its executive summary or key points.
+- The active note shows a compact local action-item panel when generated action
+  items exist.
 
 ## Out of Scope
 
