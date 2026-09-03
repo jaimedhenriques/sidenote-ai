@@ -47,6 +47,9 @@ Let a meeting owner state an optional goal before a consent-gated note starts.
   open, with singular/plural copy.
 - Markdown export appends a current local action-status section when action
   items exist, including each item’s completion state.
+- The meeting library can be filtered to show only meetings with one or more
+  local action items still open. Clearing that filter restores the complete
+  local library.
 
 ## Out of Scope
 

@@ -34,6 +34,7 @@ export function App() {
   const [template, setTemplate] = useState<MeetingTemplate>('general');
   const [consentConfirmed, setConsentConfirmed] = useState(false);
   const [query, setQuery] = useState('');
+  const [showOpenActionsOnly, setShowOpenActionsOnly] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const [status, setStatus] = useState<'idle' | 'recording' | 'processing' | 'complete' | 'error'>('idle');
   const [audioPermission, setAudioPermission] = useState('not requested');
@@ -51,15 +52,18 @@ export function App() {
 
   const filteredMeetings = useMemo(() => {
     const needle = query.trim().toLowerCase();
-    if (!needle) return meetings;
-    return meetings.filter((meeting) => [
+    return meetings.filter((meeting) => {
+      if (showOpenActionsOnly && !meeting.actionItems.some((item) => !item.completed)) return false;
+      if (!needle) return true;
+      return [
       meeting.title,
       meeting.userNotesMarkdown,
       meeting.aiSummaryMarkdown,
       meeting.transcriptText,
       ...meeting.actionItems.map((item) => `${item.text} ${item.owner} ${item.dueDate}`),
-    ].join(' ').toLowerCase().includes(needle));
-  }, [meetings, query]);
+      ].join(' ').toLowerCase().includes(needle);
+    });
+  }, [meetings, query, showOpenActionsOnly]);
 
   async function startMeeting() {
     if (!consentConfirmed) return;
@@ -252,7 +256,7 @@ export function App() {
       </section>
 
       <section className="panel">
-        <div className="library-head"><h2>Meeting library</h2><label className="search"><Search size={16} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search notes, transcripts, actions..." /></label></div>
+        <div className="library-head"><h2>Meeting library</h2><div className="library-controls"><label className="search"><Search size={16} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search notes, transcripts, actions..." /></label><label className="filter"><input type="checkbox" checked={showOpenActionsOnly} onChange={(event) => setShowOpenActionsOnly(event.target.checked)} /> Open actions</label></div></div>
         <div className="cards">{filteredMeetings.map((meeting) => <article key={meeting.id} className="meeting-card"><div><h3>{meeting.title}</h3><p>{new Date(meeting.createdAt).toLocaleString()} · {meeting.template} · {formatDuration(meeting.durationSeconds)} · {formatOpenActionCount(meeting.actionItems)}</p></div><pre>{meeting.aiSummaryMarkdown || meeting.userNotesMarkdown || 'No summary yet.'}</pre><div className="actions"><button onClick={() => setActiveMeeting(meeting)}><Sparkles size={16} /> Open</button><button onClick={() => exportMarkdown(meeting)}><FileDown size={16} /> Export MD</button><button onClick={() => deleteMeeting(meeting.id)}><Trash2 size={16} /> Delete</button></div></article>)}</div>
       </section>
 

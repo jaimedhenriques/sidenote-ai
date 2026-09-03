@@ -8,11 +8,11 @@
   },
   "market": {
     "icp": "Privacy-conscious meeting participants who need local-first notes",
-    "buyerPain": "Markdown exports can show a stale action list after local completion states change.",
+    "buyerPain": "A meeting library with many completed meetings makes outstanding follow-up hard to find.",
     "revenueHypothesis": "Reliable, local-first note capture increases confidence in the free MVP before any paid offering is evaluated."
   },
   "increment": {
-    "name": "export-current-action-status",
+    "name": "filter-open-actions",
     "acceptanceCriteria": [
       "A non-empty meeting goal is copied into the started meeting note.",
       "The meeting-goal input accepts no more than 280 characters.",
@@ -39,6 +39,9 @@
       "Each meeting-library card shows its local incomplete action count with correct singular/plural copy.",
       "Markdown export appends current local action status when action items exist.",
       "Exported action status reflects each item's saved completion state.",
+      "Meeting library can show only meetings with one or more locally open action items.",
+      "The open-action filter excludes meetings whose action items are all complete or absent.",
+      "Clearing the filter restores the complete locally saved meeting library.",
       "A blank meeting goal still starts with a blank note."
     ]
   },
@@ -53,14 +56,15 @@
       "TypeScript type check",
       "Vite production build",
       "Meeting-goal behavior assertions",
+      "Open-action filter behavior assertions",
       "LICENSE checksum"
     ],
     "caps": {
-      "activeRoles": 1,
+      "activeRoles": 2,
       "attempts": 1,
       "scheduler": "a375988edb48"
     },
-    "rollback": "Revert only the exported current action-status section.",
+    "rollback": "Revert only the local meeting-library open-action filter.",
     "stopCondition": "Stop after one local verified increment; do not deploy, submit to an app store, or change licensing."
   }
 }
