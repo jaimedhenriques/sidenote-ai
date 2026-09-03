@@ -25,12 +25,19 @@ Let a meeting owner state an optional goal before a consent-gated note starts.
   can be found without an external index.
 - Meeting-library search includes local action-item text, even when an AI
   summary does not repeat it.
+- Meeting-library search also includes local action-item owner and due-date
+  metadata.
+- Each meeting-library card shows its local action-item count with
+  singular/plural copy.
+- Deleting a local meeting requires confirmation; cancelling leaves its record
+  and active-note state unchanged.
 - The local deterministic summary renders a saved meeting goal in its own
   section and omits that section when no goal exists.
 - When that dedicated goal section exists, the local summary does not repeat
   the raw goal heading in its executive summary or key points.
 - The active note shows a compact local action-item panel when generated action
   items exist.
+- Each action in that panel displays its existing owner and due-date metadata.
 
 ## Out of Scope
 

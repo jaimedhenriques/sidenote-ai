@@ -8,11 +8,11 @@
   },
   "market": {
     "icp": "Privacy-conscious meeting participants who need local-first notes",
-    "buyerPain": "Generated action items remain buried in summary text instead of being visible during local note review.",
+    "buyerPain": "A local meeting and its notes can be removed by one accidental click.",
     "revenueHypothesis": "Reliable, local-first note capture increases confidence in the free MVP before any paid offering is evaluated."
   },
   "increment": {
-    "name": "active-note-action-item-panel",
+    "name": "confirm-local-meeting-deletion",
     "acceptanceCriteria": [
       "A non-empty meeting goal is copied into the started meeting note.",
       "The meeting-goal input accepts no more than 280 characters.",
@@ -26,6 +26,11 @@
       "The local deterministic summary does not repeat a dedicated meeting goal in its executive summary or key points.",
       "The active note shows generated action items when they exist.",
       "The active note omits the action-item panel when there are no action items.",
+      "Each displayed action includes its existing owner and due-date metadata.",
+      "Meeting-library search finds terms in local action-item owner and due-date metadata.",
+      "Each meeting-library card shows its local action-item count with correct singular/plural copy.",
+      "Deleting a local meeting requires explicit confirmation.",
+      "Cancelling the confirmation preserves the meeting record and active-note state.",
       "A blank meeting goal still starts with a blank note."
     ]
   },
@@ -47,7 +52,7 @@
       "attempts": 1,
       "scheduler": "a375988edb48"
     },
-    "rollback": "Revert only the active-note action-item panel and its styles.",
+    "rollback": "Revert only the local meeting-deletion confirmation.",
     "stopCondition": "Stop after one local verified increment; do not deploy, submit to an app store, or change licensing."
   }
 }
