@@ -5,6 +5,7 @@ import { generateConfiguredSummary } from './ai';
 import { createMeeting, createMeetingFromRecorderManifest, formatDuration, loadMeetings, saveMeetings } from './storage';
 import { describeProviderConfiguration } from './providers';
 import { formatLibraryResultCount } from './libraryStatus';
+import { formatMeetingExportFilename } from './exportFilename';
 
 const consentMessage = 'Heads up: I am using SideNote AI to help me take notes and generate a transcript/summary from this meeting. Please let me know if you would prefer I turn it off.';
 const meetingGoalLimit = 280;
@@ -212,7 +213,7 @@ function clearAllMeetings() {
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement('a');
     anchor.href = url;
-    anchor.download = `${meeting.title.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}.md`;
+    anchor.download = formatMeetingExportFilename(meeting.title);
     anchor.click();
     URL.revokeObjectURL(url);
   }
