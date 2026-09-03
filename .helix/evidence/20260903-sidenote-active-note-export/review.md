@@ -25,4 +25,4 @@
 ## Verdict
 
 - Requested local increment: PASS.
-- Full Helix delivery acceptance: PARTIAL pending remote commit proof, independent review, the missing delivery verifier, and deployment evidence.
+- Full Helix delivery acceptance: PARTIAL pending independent review, the missing delivery verifier, and deployment evidence. Remote source-commit proof passed.
