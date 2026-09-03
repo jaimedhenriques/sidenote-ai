@@ -4,6 +4,8 @@ import type { MeetingRecord, MeetingTemplate, RecorderManifest } from './types';
 import { generateConfiguredSummary } from './ai';
 import { createMeeting, createMeetingFromRecorderManifest, formatDuration, loadMeetings, saveMeetings } from './storage';
 import { describeProviderConfiguration } from './providers';
+import { goToSidenoteCtaTarget, SIDENOTE_GTM } from './gtmCopy';
+import { Button } from './ui/button';
 
 const consentMessage = 'Heads up: I am using SideNote AI to help me take notes and generate a transcript/summary from this meeting. Please let me know if you would prefer I turn it off.';
 const meetingGoalLimit = 280;
@@ -177,10 +179,11 @@ export function App() {
           <p className="eyebrow"><ShieldCheck size={16} /> Consent-first Granola competitor</p>
           <h1>SideNote AI</h1>
           <p className="lede">AI meeting notes from your own Mac — no bots joining Zoom, Teams, Meet, or Slack calls.</p>
+          <p className="quota-line">{SIDENOTE_GTM.quotaLine}</p>
           <div className="hero-actions">
-            <a className="primary hero-cta" href="#new-meeting"><Play size={18} /> Start a private meeting note</a>
+            <Button className="primary hero-cta" onClick={goToSidenoteCtaTarget}><Play size={18} /> {SIDENOTE_GTM.ctaLabel}</Button>
             <p>Consent comes first. Start locally with no meeting bot.</p>
-            <p className="pricing-note">Free local MVP. No account, payment card, or subscription required.</p>
+            <p className="pricing-note">{SIDENOTE_GTM.pricingNote}</p>
           </div>
         </div>
         <div className="trust-card"><Lock size={18} /> Local-first notes. Temporary audio deleted after transcription by default. {providerConfiguration}</div>
