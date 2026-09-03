@@ -8,18 +8,18 @@
   },
   "market": {
     "icp": "Privacy-conscious meeting participants who need local-first notes",
-    "buyerPain": "A participant filtering saved notes cannot see how many local meetings remain visible or reset a non-empty result set in one action.",
-    "revenueHypothesis": "Clear local result counts and an in-context reset make a growing meeting library easier to trust and reuse without adding external search infrastructure."
+    "buyerPain": "A participant can delete meetings one at a time but cannot intentionally reset the full local library, and a filtered view can hide the true destructive scope.",
+    "revenueHypothesis": "A clearly scoped, count-aware library reset makes the local-first product easier to reuse for demos, pilots, and privacy-sensitive workflows."
   },
   "increment": {
-    "name": "library-filter-status",
+    "name": "clear-library-confirmation",
     "acceptanceCriteria": [
-      "A non-empty library shows its local meeting count below the search controls.",
-      "Active search or Open actions filtering shows Showing X of Y local meetings with correct singular and plural copy.",
-      "When active filters still return meetings, a Clear filters button appears beside the existing controls.",
-      "When active filters return zero meetings, the existing empty-state Clear filters action remains the sole reset control.",
-      "The increment introduces no CSS, dependency, external search, account, provider, storage, or billing change.",
-      "The focused contracts, TypeScript, and production build pass locally.",
+      "A non-empty meeting library shows one Clear all meetings action beside the existing library summary.",
+      "An empty library does not show the destructive action.",
+      "The native confirmation states the total local meeting count, including meetings hidden by filters, with correct singular and plural copy.",
+      "Cancelling confirmation preserves the library; confirming clears meetings, the active note, search text, and the Open actions filter.",
+      "The increment changes no empty-state copy, CSS, dependency, account, provider, storage schema, billing, or deployment configuration.",
+      "The focused clear-library contract, all local contracts, TypeScript, and production build pass locally.",
       "LICENSE, dependency manifests, credentials, providers, billing, and deployment configuration remain unchanged."
     ]
   },
@@ -29,12 +29,12 @@
       "status": "deferred-by-bounded-local-scope"
     },
     "maker": "Codex",
-    "checker": "Codex separate local verification; independent checker unavailable in this single-agent slice",
+    "checker": "Codex separate local verification; independent checker unavailable in this bounded single-agent slice",
     "evidence": [
-      "Focused library status contract",
+      "Focused clear-library confirmation contract",
       "TypeScript type check",
       "Vite production build",
-      "Production bundle status-copy inspection",
+      "Production bundle confirmation-copy inspection",
       "Separate source and scope review",
       "LICENSE checksum"
     ],
@@ -44,7 +44,7 @@
       "maxMinutes": 45,
       "maxSpendUsd": 0
     },
-    "rollback": "Revert only the library filter status commit on feat/sidenote-meeting-goal.",
-    "stopCondition": "Stop after one verified library/search increment; do not merge, deploy, submit to an app store, spend, change credentials, or change licensing."
+    "rollback": "Revert only the clear-library confirmation commit on feat/sidenote-clear-library.",
+    "stopCondition": "Stop after one verified clear-library increment; do not merge, deploy, submit to an app store, spend, change credentials, or change licensing."
   }
 }
