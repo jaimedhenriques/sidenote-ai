@@ -31,4 +31,6 @@
 
 ## Remote proof
 
-- Pending the source commit push and draft pull-request readback.
+- Product commit `153c4126dcb7821421e2977bb822856746be623e` was pushed to `origin/feat/sidenote-clear-library` and matched the remote branch exactly on readback.
+- Draft pull request #18 targets `feat/sidenote-meeting-goal` and reported `CLEAN` and `MERGEABLE`.
+- Pull request #18 had no reported check runs and the clear-library branch had zero GitHub deployments.
