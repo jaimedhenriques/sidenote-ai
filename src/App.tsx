@@ -170,6 +170,15 @@ export function App() {
         <div className="trust-card"><Lock size={18} /> Local-first notes. Temporary audio deleted after transcription by default. {providerConfiguration}</div>
       </section>
 
+      <section className="panel privacy-brief">
+        <h2>Your meeting stays in your control</h2>
+        <div className="privacy-points">
+          <p><strong>1. Start manually</strong> SideNote never joins a meeting for you.</p>
+          <p><strong>2. Confirm consent</strong> Use the provided notice before recording.</p>
+          <p><strong>3. Keep files local</strong> Recorder manifests and transcripts stay on this device unless you choose to export them.</p>
+        </div>
+      </section>
+
       <section className="grid two" id="new-meeting">
         <div className="panel">
           <h2>New meeting</h2>
