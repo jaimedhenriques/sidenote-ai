@@ -16,6 +16,16 @@ function createMeetingWithGoal(title: string, template: MeetingTemplate, meeting
   };
 }
 
+function formatOpenActionCount(actionItems: MeetingRecord['actionItems']): string {
+  const openCount = actionItems.filter((item) => !item.completed).length;
+  return `${openCount} open ${openCount === 1 ? 'action' : 'actions'}`;
+}
+
+function formatCurrentActionStatus(actionItems: MeetingRecord['actionItems']): string {
+  if (!actionItems.length) return '';
+  return `## Current action status\n${actionItems.map((item) => `- [${item.completed ? 'x' : ' '}] ${item.text} — ${item.owner} — ${item.dueDate}`).join('\n')}`;
+}
+
 export function App() {
   const [meetings, setMeetings] = useState<MeetingRecord[]>(() => loadMeetings());
   const [activeMeeting, setActiveMeeting] = useState<MeetingRecord | null>(null);
@@ -82,6 +92,17 @@ export function App() {
   function updateActiveTranscript(value: string) {
     if (!activeMeeting) return;
     const updated = { ...activeMeeting, transcriptText: value, updatedAt: new Date().toISOString() };
+    setActiveMeeting(updated);
+    updateMeetingInLibrary(updated);
+  }
+
+  function toggleActiveActionItem(id: string) {
+    if (!activeMeeting) return;
+    const updated = {
+      ...activeMeeting,
+      actionItems: activeMeeting.actionItems.map((item) => item.id === id ? { ...item, completed: !item.completed } : item),
+      updatedAt: new Date().toISOString(),
+    };
     setActiveMeeting(updated);
     updateMeetingInLibrary(updated);
   }
@@ -169,7 +190,7 @@ export function App() {
   }
 
   function exportMarkdown(meeting: MeetingRecord) {
-    const markdown = [meeting.userNotesMarkdown, meeting.aiSummaryMarkdown].filter(Boolean).join('\n\n');
+    const markdown = [meeting.userNotesMarkdown, meeting.aiSummaryMarkdown, formatCurrentActionStatus(meeting.actionItems)].filter(Boolean).join('\n\n');
     const blob = new Blob([markdown], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement('a');
@@ -224,7 +245,7 @@ export function App() {
             <div className="recording-row"><span className={`dot ${status}`} /> {status} · {formatDuration(elapsed)} · {audioPermission}</div>
             <textarea value={activeMeeting.userNotesMarkdown} onChange={(event) => updateActiveNotes(event.target.value)} placeholder="Type rough notes while you talk..." />
             <textarea value={activeMeeting.transcriptText} onChange={(event) => updateActiveTranscript(event.target.value)} placeholder="Paste transcript here, import a .txt/.md file, or connect Mac recorder/transcription provider..." />
-            {activeMeeting.actionItems.length > 0 && <section className="import-box" aria-labelledby="active-action-items"><h3 id="active-action-items">Action items</h3><ul>{activeMeeting.actionItems.map((item) => <li key={item.id}><strong>{item.text}</strong><br /><span className="muted">{item.owner} · {item.dueDate}</span></li>)}</ul></section>}
+            {activeMeeting.actionItems.length > 0 && <section className="import-box" aria-labelledby="active-action-items"><h3 id="active-action-items">Action items</h3><ul>{activeMeeting.actionItems.map((item) => <li key={item.id}><label className="check"><input type="checkbox" checked={item.completed} onChange={() => toggleActiveActionItem(item.id)} /><span><strong>{item.text}</strong><br /><span className="muted">{item.owner} · {item.dueDate}</span></span></label></li>)}</ul></section>}
             <div className="actions"><label className="file-button"><FileText size={16} /> Import transcript<input type="file" accept=".txt,.md,text/plain,text/markdown" onChange={importTranscript} /></label><button onClick={stopMeeting}><CircleStop size={16} /> Stop + summarize</button>{activeMeeting.aiSummaryMarkdown && <button onClick={() => copy(activeMeeting.aiSummaryMarkdown)}><Clipboard size={16} /> Copy AI notes</button>}</div>
           </> : <p className="muted">Start a meeting or import a recorder manifest/transcript to open the note editor.</p>}
         </div>
@@ -232,7 +253,7 @@ export function App() {
 
       <section className="panel">
         <div className="library-head"><h2>Meeting library</h2><label className="search"><Search size={16} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search notes, transcripts, actions..." /></label></div>
-        <div className="cards">{filteredMeetings.map((meeting) => <article key={meeting.id} className="meeting-card"><div><h3>{meeting.title}</h3><p>{new Date(meeting.createdAt).toLocaleString()} · {meeting.template} · {formatDuration(meeting.durationSeconds)} · {meeting.actionItems.length} {meeting.actionItems.length === 1 ? 'action' : 'actions'}</p></div><pre>{meeting.aiSummaryMarkdown || meeting.userNotesMarkdown || 'No summary yet.'}</pre><div className="actions"><button onClick={() => setActiveMeeting(meeting)}><Sparkles size={16} /> Open</button><button onClick={() => exportMarkdown(meeting)}><FileDown size={16} /> Export MD</button><button onClick={() => deleteMeeting(meeting.id)}><Trash2 size={16} /> Delete</button></div></article>)}</div>
+        <div className="cards">{filteredMeetings.map((meeting) => <article key={meeting.id} className="meeting-card"><div><h3>{meeting.title}</h3><p>{new Date(meeting.createdAt).toLocaleString()} · {meeting.template} · {formatDuration(meeting.durationSeconds)} · {formatOpenActionCount(meeting.actionItems)}</p></div><pre>{meeting.aiSummaryMarkdown || meeting.userNotesMarkdown || 'No summary yet.'}</pre><div className="actions"><button onClick={() => setActiveMeeting(meeting)}><Sparkles size={16} /> Open</button><button onClick={() => exportMarkdown(meeting)}><FileDown size={16} /> Export MD</button><button onClick={() => deleteMeeting(meeting.id)}><Trash2 size={16} /> Delete</button></div></article>)}</div>
       </section>
 
       <section className="panel compliance"><h2><CheckCircle2 size={20} /> Built-in guardrails</h2><ul><li>Manual start/stop only.</li><li>Consent confirmation before every recording.</li><li>No meeting bot, no credential access, no platform bypass.</li><li>Mac companion captures local device audio only for meetings the user participates in.</li><li>Temporary audio deletion by default.</li></ul></section>

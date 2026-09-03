@@ -8,11 +8,11 @@
   },
   "market": {
     "icp": "Privacy-conscious meeting participants who need local-first notes",
-    "buyerPain": "A meeting goal entered before local transcript import is lost when the import creates a new meeting.",
+    "buyerPain": "Markdown exports can show a stale action list after local completion states change.",
     "revenueHypothesis": "Reliable, local-first note capture increases confidence in the free MVP before any paid offering is evaluated."
   },
   "increment": {
-    "name": "transcript-import-meeting-goal",
+    "name": "export-current-action-status",
     "acceptanceCriteria": [
       "A non-empty meeting goal is copied into the started meeting note.",
       "The meeting-goal input accepts no more than 280 characters.",
@@ -34,6 +34,11 @@
       "A new local transcript import carries a non-empty meeting goal into its note.",
       "A successful new local transcript import resets the title and meeting-goal setup fields.",
       "Importing into an active meeting does not replace its owner notes with form values.",
+      "Each active-note action item can be marked complete locally.",
+      "Changing an action completion state updates the corresponding local library record.",
+      "Each meeting-library card shows its local incomplete action count with correct singular/plural copy.",
+      "Markdown export appends current local action status when action items exist.",
+      "Exported action status reflects each item's saved completion state.",
       "A blank meeting goal still starts with a blank note."
     ]
   },
@@ -55,7 +60,7 @@
       "attempts": 1,
       "scheduler": "a375988edb48"
     },
-    "rollback": "Revert only the transcript-import meeting-goal helper and form reset.",
+    "rollback": "Revert only the exported current action-status section.",
     "stopCondition": "Stop after one local verified increment; do not deploy, submit to an app store, or change licensing."
   }
 }

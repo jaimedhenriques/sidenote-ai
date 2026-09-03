@@ -41,6 +41,12 @@ Let a meeting owner state an optional goal before a consent-gated note starts.
 - Importing a local transcript into a new meeting carries the optional
   meeting-goal heading into that local note and resets the setup fields after
   import succeeds.
+- Each active-note action item can be marked complete locally; the updated
+  completed state persists through the meeting library.
+- Each meeting-library card shows the number of local action items that remain
+  open, with singular/plural copy.
+- Markdown export appends a current local action-status section when action
+  items exist, including each item’s completion state.
 
 ## Out of Scope
 
