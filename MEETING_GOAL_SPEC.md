@@ -38,6 +38,9 @@ Let a meeting owner state an optional goal before a consent-gated note starts.
 - The active note shows a compact local action-item panel when generated action
   items exist.
 - Each action in that panel displays its existing owner and due-date metadata.
+- Importing a local transcript into a new meeting carries the optional
+  meeting-goal heading into that local note and resets the setup fields after
+  import succeeds.
 
 ## Out of Scope
 

@@ -8,6 +8,14 @@ import { describeProviderConfiguration } from './providers';
 const consentMessage = 'Heads up: I am using SideNote AI to help me take notes and generate a transcript/summary from this meeting. Please let me know if you would prefer I turn it off.';
 const meetingGoalLimit = 280;
 
+function createMeetingWithGoal(title: string, template: MeetingTemplate, meetingGoal: string): MeetingRecord {
+  const goal = meetingGoal.trim();
+  return {
+    ...createMeeting(title, template),
+    userNotesMarkdown: goal ? `## Meeting goal\n${goal}` : '',
+  };
+}
+
 export function App() {
   const [meetings, setMeetings] = useState<MeetingRecord[]>(() => loadMeetings());
   const [activeMeeting, setActiveMeeting] = useState<MeetingRecord | null>(null);
@@ -45,11 +53,7 @@ export function App() {
 
   async function startMeeting() {
     if (!consentConfirmed) return;
-    const goal = meetingGoal.trim();
-    const meeting = {
-      ...createMeeting(title, template),
-      userNotesMarkdown: goal ? `## Meeting goal\n${goal}` : '',
-    };
+    const meeting = createMeetingWithGoal(title, template, meetingGoal);
     setActiveMeeting(meeting);
     setTitle('');
     setMeetingGoal('');
@@ -119,12 +123,17 @@ export function App() {
       if (!isTranscriptFile(file)) throw new Error('Please choose a .txt or .md transcript file.');
       const transcriptText = await file.text();
       const baseTitle = file.name.replace(/\.(txt|md)$/i, '').replace(/[-_]+/g, ' ').trim();
-      const meeting = activeMeeting ?? createMeeting(title.trim() || baseTitle || file.name, template);
+      const isNewMeeting = !activeMeeting;
+      const meeting = activeMeeting ?? createMeetingWithGoal(title.trim() || baseTitle || file.name, template, meetingGoal);
       const updated: MeetingRecord = { ...meeting, transcriptText, updatedAt: new Date().toISOString() };
       setActiveMeeting(updated);
       upsertMeetingInLibrary(updated);
       setElapsed(updated.durationSeconds);
       setStatus(activeMeeting ? status : 'complete');
+      if (isNewMeeting) {
+        setTitle('');
+        setMeetingGoal('');
+      }
       setAudioPermission('transcript imported from local file — no audio upload performed');
       setImportStatus(`Imported transcript into “${updated.title}”.`);
     } catch (error) {
