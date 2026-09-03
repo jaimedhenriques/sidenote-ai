@@ -164,6 +164,7 @@ export function App() {
           <div className="hero-actions">
             <a className="primary hero-cta" href="#new-meeting"><Play size={18} /> Start a private meeting note</a>
             <p>Consent comes first. Start locally with no meeting bot.</p>
+            <p className="pricing-note">Free local MVP. No account, payment card, or subscription required.</p>
           </div>
         </div>
         <div className="trust-card"><Lock size={18} /> Local-first notes. Temporary audio deleted after transcription by default. {providerConfiguration}</div>
