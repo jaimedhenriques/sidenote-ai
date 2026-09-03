@@ -8,17 +8,17 @@
   },
   "market": {
     "icp": "Privacy-conscious meeting participants who need local-first notes",
-    "buyerPain": "A first-time user reaches an empty meeting library with instructions but no direct action to create the first note.",
-    "revenueHypothesis": "A direct empty-state path into the existing consent-first workflow reduces first-run friction without adding account, provider, or billing scope."
+    "buyerPain": "A participant reviewing an active note must return to its library card before downloading the note as Markdown.",
+    "revenueHypothesis": "A direct active-note export action shortens the path from captured meeting context to a client-ready local file without adding a sharing provider."
   },
   "increment": {
-    "name": "empty-library-first-note-cta",
+    "name": "active-note-export-cta",
     "acceptanceCriteria": [
-      "When no local meetings exist, the rendered empty state links to #new-meeting.",
-      "The link is labelled Create your first meeting note.",
-      "The CTA reuses existing SideNote primary-link styling and introduces no new CSS or dependency.",
-      "The filtered no-results state keeps its existing Clear filters recovery action.",
-      "TypeScript, the persistent DOM contract, and the production build pass locally.",
+      "An active note displays an Export note action in its existing action row.",
+      "The action calls the existing local Markdown export for the active meeting.",
+      "The existing library-card Export MD action remains unchanged.",
+      "The new action introduces no CSS, dependency, external sharing API, account, or provider request.",
+      "The focused contract, TypeScript, and production build pass locally.",
       "LICENSE, dependency manifests, credentials, providers, billing, and deployment configuration remain unchanged."
     ]
   },
@@ -30,10 +30,10 @@
     "maker": "Codex",
     "checker": "Codex separate local verification; independent checker unavailable in this single-agent slice",
     "evidence": [
-      "Persistent rendered-markup contract",
+      "Focused active-note export contract",
       "TypeScript type check",
       "Vite production build",
-      "Production bundle copy and target inspection",
+      "Production bundle export-label inspection",
       "Separate source and scope review",
       "LICENSE checksum"
     ],
@@ -43,7 +43,7 @@
       "maxMinutes": 45,
       "maxSpendUsd": 0
     },
-    "rollback": "Revert only the empty-library CTA commit on feat/sidenote-meeting-goal.",
-    "stopCondition": "Stop after one verified empty-state increment; do not merge, deploy, submit to an app store, spend, change credentials, or change licensing."
+    "rollback": "Revert only the active-note export CTA commit on feat/sidenote-meeting-goal.",
+    "stopCondition": "Stop after one verified active-note export increment; do not merge, deploy, submit to an app store, spend, change credentials, or change licensing."
   }
 }
