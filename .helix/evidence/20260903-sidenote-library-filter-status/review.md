@@ -25,4 +25,5 @@
 ## Verdict
 
 - Requested local increment: PASS.
-- Full Helix delivery acceptance: PARTIAL pending remote commit proof, independent review, the missing delivery verifier, and deployment evidence.
+- Product-source remote proof: PASS for commit `11f6586728341a979c5d8c1e03636b5ce3223257` on draft pull request #15.
+- Full Helix delivery acceptance: PARTIAL pending independent review, the missing delivery verifier, and deployment evidence.
