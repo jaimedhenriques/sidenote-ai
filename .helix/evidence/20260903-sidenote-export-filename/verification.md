@@ -30,4 +30,6 @@
 
 ## Remote proof
 
-- Pending the source commit push and draft pull-request readback.
+- Product commit `f14a4ca77a5c4614f2d56edcc68558d8c4a145f5` was pushed to `origin/feat/sidenote-export-filename` and matched the remote branch exactly on readback.
+- Draft pull request #17 targets `feat/sidenote-meeting-goal` and reported `CLEAN` and `MERGEABLE`.
+- Pull request #17 had no reported check runs and the export branch had zero GitHub deployments.
