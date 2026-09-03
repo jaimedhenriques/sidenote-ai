@@ -6,11 +6,13 @@ import { createMeeting, createMeetingFromRecorderManifest, formatDuration, loadM
 import { describeProviderConfiguration } from './providers';
 
 const consentMessage = 'Heads up: I am using SideNote AI to help me take notes and generate a transcript/summary from this meeting. Please let me know if you would prefer I turn it off.';
+const meetingGoalLimit = 280;
 
 export function App() {
   const [meetings, setMeetings] = useState<MeetingRecord[]>(() => loadMeetings());
   const [activeMeeting, setActiveMeeting] = useState<MeetingRecord | null>(null);
   const [title, setTitle] = useState('');
+  const [meetingGoal, setMeetingGoal] = useState('');
   const [template, setTemplate] = useState<MeetingTemplate>('general');
   const [consentConfirmed, setConsentConfirmed] = useState(false);
   const [query, setQuery] = useState('');
@@ -37,8 +39,14 @@ export function App() {
 
   async function startMeeting() {
     if (!consentConfirmed) return;
-    const meeting = createMeeting(title, template);
+    const goal = meetingGoal.trim();
+    const meeting = {
+      ...createMeeting(title, template),
+      userNotesMarkdown: goal ? `## Meeting goal\n${goal}` : '',
+    };
     setActiveMeeting(meeting);
+    setTitle('');
+    setMeetingGoal('');
     setElapsed(0);
     setStatus('recording');
     setImportStatus(null);
@@ -145,7 +153,8 @@ export function App() {
   }
 
   function exportMarkdown(meeting: MeetingRecord) {
-    const blob = new Blob([meeting.aiSummaryMarkdown || meeting.userNotesMarkdown], { type: 'text/markdown' });
+    const markdown = [meeting.userNotesMarkdown, meeting.aiSummaryMarkdown].filter(Boolean).join('\n\n');
+    const blob = new Blob([markdown], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement('a');
     anchor.href = url;
@@ -183,6 +192,9 @@ export function App() {
         <div className="panel">
           <h2>New meeting</h2>
           <label>Title<input value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Customer call, 1:1, user interview..." /></label>
+          <label>Meeting goal <span className="muted">(optional)</span><input value={meetingGoal} onChange={(event) => setMeetingGoal(event.target.value)} placeholder="Decide next steps, validate a proposal..." maxLength={meetingGoalLimit} aria-describedby="meeting-goal-help meeting-goal-count" /></label>
+          <p className="muted" id="meeting-goal-help">Up to 280 characters. This pre-fills the local note.</p>
+          <p className="muted" id="meeting-goal-count" aria-live="polite">{meetingGoal.length}/{meetingGoalLimit} characters</p>
           <label>Template<select value={template} onChange={(event) => setTemplate(event.target.value as MeetingTemplate)}><option value="general">General</option><option value="sales">Sales / customer</option><option value="interview">User interview</option></select></label>
           <div className="import-box"><strong>Import from local files</strong><p>Open a recorder manifest or import a transcript without uploading audio.</p><div className="actions"><label className="file-button"><Upload size={16} /> Import recorder manifest<input type="file" accept="application/json,.json" onChange={importRecorderManifest} /></label><label className="file-button"><FileText size={16} /> Import transcript<input type="file" accept=".txt,.md,text/plain,text/markdown" onChange={importTranscript} /></label></div>{importStatus && <p className="import-status">{importStatus}</p>}</div>
           <div className="consent-box"><strong>Consent message</strong><p>{consentMessage}</p><button onClick={() => copy(consentMessage)}><Clipboard size={16} /> Copy consent message</button></div>

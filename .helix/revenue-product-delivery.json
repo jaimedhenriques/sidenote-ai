@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 2,
+  "project": {
+    "company": "SideNote AI",
+    "name": "sidenote-ai",
+    "artifactType": "web-product",
+    "canonicalGitHubTarget": "https://github.com/jaimedhenriques/sidenote-ai"
+  },
+  "market": {
+    "icp": "Privacy-conscious meeting participants who need local-first notes",
+    "buyerPain": "An exported AI summary can omit the meeting goal and other owner notes that provide its context.",
+    "revenueHypothesis": "Reliable, local-first note capture increases confidence in the free MVP before any paid offering is evaluated."
+  },
+  "increment": {
+    "name": "meeting-export-owner-context",
+    "acceptanceCriteria": [
+      "A non-empty meeting goal is copied into the started meeting note.",
+      "The meeting-goal input accepts no more than 280 characters.",
+      "The meeting-goal input explains that its value pre-fills the local note.",
+      "The meeting-goal input shows its current character count against the limit.",
+      "Markdown export preserves local owner notes before an available AI summary.",
+      "A blank meeting goal still starts with a blank note."
+    ]
+  },
+  "delivery": {
+    "vercel": {
+      "mode": "required-before-public-delivery",
+      "status": "not-requested"
+    },
+    "maker": "Copilot CLI",
+    "checker": "separate local build and source-behavior assertions",
+    "evidence": [
+      "TypeScript type check",
+      "Vite production build",
+      "Meeting-goal behavior assertions",
+      "LICENSE checksum"
+    ],
+    "caps": {
+      "activeRoles": 1,
+      "attempts": 1,
+      "scheduler": "a375988edb48"
+    },
+    "rollback": "Revert only the Markdown export composition change.",
+    "stopCondition": "Stop after one local verified increment; do not deploy, submit to an app store, or change licensing."
+  }
+}
