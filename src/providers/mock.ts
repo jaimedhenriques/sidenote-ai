@@ -33,11 +33,21 @@ function bulletize(text: string, fallback: string): string[] {
   return sentences.length ? sentences : [fallback];
 }
 
+function extractMeetingGoal(userNotesMarkdown: string): string | null {
+  const prefix = '## Meeting goal\n';
+  if (!userNotesMarkdown.startsWith(prefix)) return null;
+  const goal = userNotesMarkdown.slice(prefix.length).split('\n', 1)[0].trim();
+  return goal || null;
+}
+
 export function generateMockNotes(meeting: MeetingRecord, transcriptText = meeting.transcriptText): NotesResult {
   const source = `${meeting.userNotesMarkdown}\n${transcriptText}`.trim();
   const actionItems = collectLocalActionItems(source);
-  const keyPoints = bulletize(source, 'No detailed transcript yet. Add transcript text or configure a transcription provider.');
+  const meetingGoal = extractMeetingGoal(meeting.userNotesMarkdown);
+  const summarySource = meetingGoal ? source.replace(/^## Meeting goal\n[^\n]*(?:\n+)?/, '') : source;
+  const keyPoints = bulletize(summarySource, 'No detailed transcript yet. Add transcript text or configure a transcription provider.');
   const templateLabel = TEMPLATE_LABELS[meeting.template];
+  const meetingGoalSection = meetingGoal ? `## Meeting Goal\n${meetingGoal}\n\n` : '';
 
   const extraSection = meeting.template === 'sales'
     ? `\n## Sales Lens\n- Pain points: Review transcript for explicit blockers.\n- Objections: Pricing/security/timeline cues are highlighted when present.\n- Next step: Confirm follow-up owner and date.\n`
@@ -45,7 +55,7 @@ export function generateMockNotes(meeting: MeetingRecord, transcriptText = meeti
       ? `\n## Research Lens\n- Workflow: Capture current process from transcript.\n- Pain points: Pull exact quotes before sharing externally.\n- Opportunities: Convert repeated friction into product hypotheses.\n`
       : '';
 
-  const summaryMarkdown = `# ${meeting.title}\n\n## Executive Summary\n${keyPoints[0]}\n\n## Key Points\n${keyPoints.map((point) => `- ${point}`).join('\n')}\n\n## Decisions\n- Review transcript for explicit decisions before sending externally.\n\n## Action Items\n${actionItems.length ? actionItems.map((item) => `- [ ] ${item.text} — ${item.owner} — ${item.dueDate}`).join('\n') : '- No action items detected yet.'}\n\n## Open Questions\n- What follow-up is required?\n- Who owns the next step?\n\n## Important Details\n- Template: ${templateLabel}\n- Consent confirmed by user: ${meeting.consentConfirmed ? 'Yes' : 'No'}\n- Temporary audio retained: No — audio deletion by default.\n- Provider: mock/local deterministic adapter.\n${extraSection}\n## Follow-up Draft\nHi — thanks for the conversation today. Here are the notes I captured:\n\n${keyPoints.map((point) => `- ${point}`).join('\n')}\n\nNext steps:\n${actionItems.length ? actionItems.map((item) => `- ${item.text}`).join('\n') : '- I will confirm the next step separately.'}\n`;
+  const summaryMarkdown = `# ${meeting.title}\n\n${meetingGoalSection}## Executive Summary\n${keyPoints[0]}\n\n## Key Points\n${keyPoints.map((point) => `- ${point}`).join('\n')}\n\n## Decisions\n- Review transcript for explicit decisions before sending externally.\n\n## Action Items\n${actionItems.length ? actionItems.map((item) => `- [ ] ${item.text} — ${item.owner} — ${item.dueDate}`).join('\n') : '- No action items detected yet.'}\n\n## Open Questions\n- What follow-up is required?\n- Who owns the next step?\n\n## Important Details\n- Template: ${templateLabel}\n- Consent confirmed by user: ${meeting.consentConfirmed ? 'Yes' : 'No'}\n- Temporary audio retained: No — audio deletion by default.\n- Provider: mock/local deterministic adapter.\n${extraSection}\n## Follow-up Draft\nHi — thanks for the conversation today. Here are the notes I captured:\n\n${keyPoints.map((point) => `- ${point}`).join('\n')}\n\nNext steps:\n${actionItems.length ? actionItems.map((item) => `- ${item.text}`).join('\n') : '- I will confirm the next step separately.'}\n`;
 
   return {
     summaryMarkdown,

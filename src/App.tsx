@@ -34,7 +34,13 @@ export function App() {
   const filteredMeetings = useMemo(() => {
     const needle = query.trim().toLowerCase();
     if (!needle) return meetings;
-    return meetings.filter((meeting) => `${meeting.title} ${meeting.aiSummaryMarkdown} ${meeting.transcriptText}`.toLowerCase().includes(needle));
+    return meetings.filter((meeting) => [
+      meeting.title,
+      meeting.userNotesMarkdown,
+      meeting.aiSummaryMarkdown,
+      meeting.transcriptText,
+      ...meeting.actionItems.map((item) => item.text),
+    ].join(' ').toLowerCase().includes(needle));
   }, [meetings, query]);
 
   async function startMeeting() {
