@@ -8,17 +8,18 @@
   },
   "market": {
     "icp": "Privacy-conscious meeting participants who need local-first notes",
-    "buyerPain": "A participant reviewing an active note must return to its library card before downloading the note as Markdown.",
-    "revenueHypothesis": "A direct active-note export action shortens the path from captured meeting context to a client-ready local file without adding a sharing provider."
+    "buyerPain": "A participant filtering saved notes cannot see how many local meetings remain visible or reset a non-empty result set in one action.",
+    "revenueHypothesis": "Clear local result counts and an in-context reset make a growing meeting library easier to trust and reuse without adding external search infrastructure."
   },
   "increment": {
-    "name": "active-note-export-cta",
+    "name": "library-filter-status",
     "acceptanceCriteria": [
-      "An active note displays an Export note action in its existing action row.",
-      "The action calls the existing local Markdown export for the active meeting.",
-      "The existing library-card Export MD action remains unchanged.",
-      "The new action introduces no CSS, dependency, external sharing API, account, or provider request.",
-      "The focused contract, TypeScript, and production build pass locally.",
+      "A non-empty library shows its local meeting count below the search controls.",
+      "Active search or Open actions filtering shows Showing X of Y local meetings with correct singular and plural copy.",
+      "When active filters still return meetings, a Clear filters button appears beside the existing controls.",
+      "When active filters return zero meetings, the existing empty-state Clear filters action remains the sole reset control.",
+      "The increment introduces no CSS, dependency, external search, account, provider, storage, or billing change.",
+      "The focused contracts, TypeScript, and production build pass locally.",
       "LICENSE, dependency manifests, credentials, providers, billing, and deployment configuration remain unchanged."
     ]
   },
@@ -30,10 +31,10 @@
     "maker": "Codex",
     "checker": "Codex separate local verification; independent checker unavailable in this single-agent slice",
     "evidence": [
-      "Focused active-note export contract",
+      "Focused library status contract",
       "TypeScript type check",
       "Vite production build",
-      "Production bundle export-label inspection",
+      "Production bundle status-copy inspection",
       "Separate source and scope review",
       "LICENSE checksum"
     ],
@@ -43,7 +44,7 @@
       "maxMinutes": 45,
       "maxSpendUsd": 0
     },
-    "rollback": "Revert only the active-note export CTA commit on feat/sidenote-meeting-goal.",
-    "stopCondition": "Stop after one verified active-note export increment; do not merge, deploy, submit to an app store, spend, change credentials, or change licensing."
+    "rollback": "Revert only the library filter status commit on feat/sidenote-meeting-goal.",
+    "stopCondition": "Stop after one verified library/search increment; do not merge, deploy, submit to an app store, spend, change credentials, or change licensing."
   }
 }

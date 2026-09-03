@@ -4,6 +4,7 @@ import type { MeetingRecord, MeetingTemplate, RecorderManifest } from './types';
 import { generateConfiguredSummary } from './ai';
 import { createMeeting, createMeetingFromRecorderManifest, formatDuration, loadMeetings, saveMeetings } from './storage';
 import { describeProviderConfiguration } from './providers';
+import { formatLibraryResultCount } from './libraryStatus';
 
 const consentMessage = 'Heads up: I am using SideNote AI to help me take notes and generate a transcript/summary from this meeting. Please let me know if you would prefer I turn it off.';
 const meetingGoalLimit = 280;
@@ -64,6 +65,7 @@ export function App() {
       ].join(' ').toLowerCase().includes(needle);
     });
   }, [meetings, query, showOpenActionsOnly]);
+  const libraryFiltersActive = Boolean(query.trim()) || showOpenActionsOnly;
 
   async function startMeeting() {
     if (!consentConfirmed) return;
@@ -189,10 +191,16 @@ export function App() {
     if (activeMeeting?.id === id) setActiveMeeting(null);
   }
 
-  function clearLibraryFilters() {
+function clearLibraryFilters() {
     setQuery('');
     setShowOpenActionsOnly(false);
-  }
+}
+
+function clearAllMeetings() {
+    if (!window.confirm('Delete all local meetings and their notes? This cannot be undone.')) return;
+    setMeetings([]);
+    setActiveMeeting(null);
+}
 
   async function copy(text: string) {
     await navigator.clipboard.writeText(text);
@@ -261,7 +269,8 @@ export function App() {
       </section>
 
       <section className="panel">
-        <div className="library-head"><h2>Meeting library</h2><div className="library-controls"><label className="search"><Search size={16} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search notes, transcripts, actions..." /></label><label className="filter"><input type="checkbox" checked={showOpenActionsOnly} onChange={(event) => setShowOpenActionsOnly(event.target.checked)} /> Open actions</label></div></div>
+        <div className="library-head"><h2>Meeting library</h2><div className="library-controls"><label className="search"><Search size={16} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search notes, transcripts, actions..." /></label><label className="filter"><input type="checkbox" checked={showOpenActionsOnly} onChange={(event) => setShowOpenActionsOnly(event.target.checked)} /> Open actions</label>{libraryFiltersActive && filteredMeetings.length > 0 && <button onClick={clearLibraryFilters}>Clear filters</button>}</div></div>
+        {meetings.length > 0 && <p className="muted" role="status" aria-atomic="true">{formatLibraryResultCount(filteredMeetings.length, meetings.length, libraryFiltersActive)}</p>}
         <div className="cards">{filteredMeetings.length ? filteredMeetings.map((meeting) => <article key={meeting.id} className="meeting-card"><div><h3>{meeting.title}</h3><p>{new Date(meeting.createdAt).toLocaleString()} · {meeting.template} · {formatDuration(meeting.durationSeconds)} · {formatOpenActionCount(meeting.actionItems)}</p></div><pre>{meeting.aiSummaryMarkdown || meeting.userNotesMarkdown || 'No summary yet.'}</pre><div className="actions"><button onClick={() => setActiveMeeting(meeting)}><Sparkles size={16} /> Open</button><button onClick={() => exportMarkdown(meeting)}><FileDown size={16} /> Export MD</button><button onClick={() => deleteMeeting(meeting.id)}><Trash2 size={16} /> Delete</button></div></article>) : <div className="empty-library" aria-live="polite">{meetings.length ? <><p>No local meetings match the current search or Open actions filter.</p><button onClick={clearLibraryFilters}>Clear filters</button></> : <><p>No local meetings yet. Start a meeting or import a local transcript to create one.</p><a className="primary hero-cta" href="#new-meeting"><Play size={16} /> Create your first meeting note</a></>}</div>}</div>
       </section>
 
