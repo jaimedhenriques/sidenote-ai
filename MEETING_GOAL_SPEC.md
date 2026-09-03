@@ -50,6 +50,9 @@ Let a meeting owner state an optional goal before a consent-gated note starts.
 - The meeting library can be filtered to show only meetings with one or more
   local action items still open. Clearing that filter restores the complete
   local library.
+- An empty meeting-library view distinguishes an empty local library from a
+  search or open-action filter with no matching local meetings, and the latter
+  offers one control to clear those local filters.
 
 ## Out of Scope
 

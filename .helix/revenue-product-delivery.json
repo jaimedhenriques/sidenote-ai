@@ -8,11 +8,11 @@
   },
   "market": {
     "icp": "Privacy-conscious meeting participants who need local-first notes",
-    "buyerPain": "A meeting library with many completed meetings makes outstanding follow-up hard to find.",
+    "buyerPain": "A filtered local meeting library can appear empty without explaining whether meetings are absent or hidden.",
     "revenueHypothesis": "Reliable, local-first note capture increases confidence in the free MVP before any paid offering is evaluated."
   },
   "increment": {
-    "name": "filter-open-actions",
+    "name": "explain-empty-library-results",
     "acceptanceCriteria": [
       "A non-empty meeting goal is copied into the started meeting note.",
       "The meeting-goal input accepts no more than 280 characters.",
@@ -42,6 +42,8 @@
       "Meeting library can show only meetings with one or more locally open action items.",
       "The open-action filter excludes meetings whose action items are all complete or absent.",
       "Clearing the filter restores the complete locally saved meeting library.",
+      "An empty library explains whether no meetings exist or local search/filter controls hide all meetings.",
+      "A no-results view can clear local search and the open-action filter in one action.",
       "A blank meeting goal still starts with a blank note."
     ]
   },
@@ -57,6 +59,7 @@
       "Vite production build",
       "Meeting-goal behavior assertions",
       "Open-action filter behavior assertions",
+      "Meeting-library empty-state assertions",
       "LICENSE checksum"
     ],
     "caps": {
@@ -64,7 +67,7 @@
       "attempts": 1,
       "scheduler": "a375988edb48"
     },
-    "rollback": "Revert only the local meeting-library open-action filter.",
+    "rollback": "Revert only the local meeting-library empty-state explanation and clear-filters control.",
     "stopCondition": "Stop after one local verified increment; do not deploy, submit to an app store, or change licensing."
   }
 }

@@ -189,6 +189,11 @@ export function App() {
     if (activeMeeting?.id === id) setActiveMeeting(null);
   }
 
+  function clearLibraryFilters() {
+    setQuery('');
+    setShowOpenActionsOnly(false);
+  }
+
   async function copy(text: string) {
     await navigator.clipboard.writeText(text);
   }
@@ -257,7 +262,7 @@ export function App() {
 
       <section className="panel">
         <div className="library-head"><h2>Meeting library</h2><div className="library-controls"><label className="search"><Search size={16} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search notes, transcripts, actions..." /></label><label className="filter"><input type="checkbox" checked={showOpenActionsOnly} onChange={(event) => setShowOpenActionsOnly(event.target.checked)} /> Open actions</label></div></div>
-        <div className="cards">{filteredMeetings.map((meeting) => <article key={meeting.id} className="meeting-card"><div><h3>{meeting.title}</h3><p>{new Date(meeting.createdAt).toLocaleString()} · {meeting.template} · {formatDuration(meeting.durationSeconds)} · {formatOpenActionCount(meeting.actionItems)}</p></div><pre>{meeting.aiSummaryMarkdown || meeting.userNotesMarkdown || 'No summary yet.'}</pre><div className="actions"><button onClick={() => setActiveMeeting(meeting)}><Sparkles size={16} /> Open</button><button onClick={() => exportMarkdown(meeting)}><FileDown size={16} /> Export MD</button><button onClick={() => deleteMeeting(meeting.id)}><Trash2 size={16} /> Delete</button></div></article>)}</div>
+        <div className="cards">{filteredMeetings.length ? filteredMeetings.map((meeting) => <article key={meeting.id} className="meeting-card"><div><h3>{meeting.title}</h3><p>{new Date(meeting.createdAt).toLocaleString()} · {meeting.template} · {formatDuration(meeting.durationSeconds)} · {formatOpenActionCount(meeting.actionItems)}</p></div><pre>{meeting.aiSummaryMarkdown || meeting.userNotesMarkdown || 'No summary yet.'}</pre><div className="actions"><button onClick={() => setActiveMeeting(meeting)}><Sparkles size={16} /> Open</button><button onClick={() => exportMarkdown(meeting)}><FileDown size={16} /> Export MD</button><button onClick={() => deleteMeeting(meeting.id)}><Trash2 size={16} /> Delete</button></div></article>) : <div className="empty-library" aria-live="polite">{meetings.length ? <><p>No local meetings match the current search or Open actions filter.</p><button onClick={clearLibraryFilters}>Clear filters</button></> : <p>No local meetings yet. Start a meeting or import a local transcript to create one.</p>}</div>}</div>
       </section>
 
       <section className="panel compliance"><h2><CheckCircle2 size={20} /> Built-in guardrails</h2><ul><li>Manual start/stop only.</li><li>Consent confirmation before every recording.</li><li>No meeting bot, no credential access, no platform bypass.</li><li>Mac companion captures local device audio only for meetings the user participates in.</li><li>Temporary audio deletion by default.</li></ul></section>
