@@ -25,4 +25,4 @@
 ## Verdict
 
 - Requested local increment: PASS.
-- Full Helix delivery acceptance: PARTIAL because independent review, the delivery verifier, deployment evidence, and remote commit proof are unavailable in this bounded single-agent slice.
+- Full Helix delivery acceptance: PARTIAL because independent review, the delivery verifier, and deployment evidence are unavailable in this bounded single-agent slice. Remote source-commit proof passed.

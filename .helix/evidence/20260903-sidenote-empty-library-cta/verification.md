@@ -17,6 +17,8 @@
 - Diff hygiene: `git diff --check` passed.
 - Licence SHA-256 remains `1f7b21edb5e5810a5d2ae405ecd1882d67f410e4c2a2245e93e9de48112e5da6`.
 - Protected package and lock files are unchanged. No credential, provider, storage, billing, recording, deployment, or style file changed.
+- GitHub: source commit `fcfa75e2f24f14193ef8dd70b1b207d9a2dec799` was pushed to `feat/sidenote-meeting-goal` and accepted by draft pull request #15.
+- Deployment lookup returned no deployments for the branch.
 
 ## Honest limits
 
@@ -24,3 +26,4 @@
 - A direct Chrome headless DOM attempt stalled without returning markup; the exact Chrome and local Vite processes were terminated and no browser result is counted as a pass.
 - The persistent Vite/React rendered-markup contract and separate production-bundle inspection provide the local runtime evidence for this slice.
 - The documented Helix delivery verifier is absent, so its command stopped with exit 2.
+- The first GitHub push was rejected by private-email protection. Only the new commit had a protected address; its metadata was changed to the authenticated GitHub no-reply identity without changing its tree, and the retry succeeded.
